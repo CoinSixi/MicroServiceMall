@@ -1,0 +1,14 @@
+# Yureka Server Configuration
+server:
+  port: 8763   # HTTP port
+spring: 
+  application:
+    name: eureka-server
+eureka:
+  instance:
+    hostname: peer2
+  client:
+    serviceUrl: 
+      defaultZone: http://peer1:8762/eureka
+    registerWithEureka: true
+    fetchRegistry: true

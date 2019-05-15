@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.micromall.userservice.dao.UserMapper">
+	<resultMap id="BaseResultMap" type="com.micromall.apiservice.entities.User">
+		<constructor>
+			<arg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+			<arg column="username" javaType="java.lang.String" jdbcType="VARCHAR" />
+			<arg column="password" javaType="java.lang.String" jdbcType="VARCHAR" />
+			<arg column="email" javaType="java.lang.String" jdbcType="VARCHAR" />
+			<arg column="phone" javaType="java.lang.String" jdbcType="VARCHAR" />
+			<arg column="user_image" javaType="java.lang.String" jdbcType="VARCHAR" />
+			<arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+			<arg column="login_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+			<arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+		</constructor>
+	</resultMap>
+	<insert id="insert" parameterType="com.micromall.apiservice.entities.User">
+		insert into mall_user (id, username, password,
+		email, phone, user_image, create_time, login_time,
+		update_time)
+		values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR},
+		#{password,jdbcType=VARCHAR},
+		#{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{userImage,jdbcType=VARCHAR}, now(),
+		#{loginTime,jdbcType=TIMESTAMP},now())
+	</insert>
+	<insert id="insertSelective" parameterType="com.micromall.apiservice.entities.User">
+		insert into mall_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="username != null">
+				username,
+			</if>
+			<if test="password != null">
+				password,
+			</if>
+			<if test="email != null">
+				email,
+			</if>
+			<if test="phone != null">
+				phone,
+			</if>
+			<if test="userImage != null">
+				user_image,
+			</if>
+			<if test="createTime == null">
+				create_time,
+			</if>
+			<if test="loginTime != null">
+				login_time,
+			</if>
+			<if test="updateTime == null">
+				update_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="username != null">
+				#{username,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				#{email,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null">
+				#{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="userImage != null">
+				#{userImage,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime == null">
+				now(),
+			</if>
+			<if test="loginTime != null">
+				#{loginTime,jdbcType=TIMESTAMP},
+			</if>		
+			<if test="updateTime == null">
+				now(),
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKey" parameterType="com.micromall.apiservice.entities.User">
+		update mall_user
+		set username = #{username,jdbcType=VARCHAR},
+		password = #{password,jdbcType=VARCHAR},
+		email = #{email,jdbcType=VARCHAR},
+		phone = #{phone,jdbcType=VARCHAR},
+		user_image = #{userImage,jdbcType=VARCHAR},
+		create_time = #{createTime,jdbcType=TIMESTAMP},
+		login_time = #{loginTime,jdbcType=TIMESTAMP},
+		update_time = now(),
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.micromall.apiservice.entities.User">
+		update mall_user
+		<set>
+			<if test="username != null">
+				username = #{username,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				password = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				email = #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="phone != null">
+				phone = #{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="userImage != null">
+				user_image = #{userImage,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="loginTime != null">
+				login_time = #{loginTime,jdbcType=TIMESTAMP},
+			</if>
+				update_time = now()
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	
+	<!-- 设置login_time为当前时间, 输入参数类型为:String -->
+	<update id="setLoginTime" parameterType="String">
+	    update mall_user set login_time = now()
+	    	where username = #{username,jdbcType=VARCHAR}
+	</update>
+	
+	<!-- 设置update_time为当前时间, 输入参数类型为:String -->
+	<update id="setUpdateTime" parameterType="String">
+	    update mall_user set update_time = now()
+	    	where username = #{username,jdbcType=VARCHAR}
+	</update>
+	
+	<!-- 删除该user, 输入参数类型为:User -->
+	<delete id="delete" parameterType="com.micromall.apiservice.entities.User">
+		delete from mall_user where username = #{username,jdbcType=VARCHAR}
+	</delete>
+	
+	<!-- 删除该user, 输入参数类型为:String -->
+	<delete id="deleteByUsername" parameterType="String">
+	    delete from mall_user where username = #{username,jdbcType=VARCHAR}
+	</delete>
+	
+	<sql id="Base_Column_List">
+		id, username, password, email, phone, user_image, create_time, login_time,
+		update_time
+	</sql>
+	
+	<!-- 根据用户名查询用户 返回一个User对象 输入参数类型为:String -->
+	<select id="getUserByName" resultMap="BaseResultMap" parameterType="String">
+		SELECT
+		<include refid="Base_Column_List" />   <!--只需要查询我们需要的字段 -->
+		from mall_user
+		where username = #{username}
+	</select>
+	
+	<!-- 根据id查询用户 返回一个User对象 输入参数类型为:Integer -->
+	<select id="getUserById" resultMap="BaseResultMap" parameterType="Integer">
+		SELECT
+		<include refid="Base_Column_List" />   <!--只需要查询我们需要的字段 -->
+		from mall_user
+		where id = #{id}
+	</select>
+	
+	<!-- 根据phone查询用户 返回一个User对象 输入参数类型为:String -->
+	<select id="getUserByPhone" resultMap="BaseResultMap" parameterType="String">
+		SELECT
+		<include refid="Base_Column_List" />   <!--只需要查询我们需要的字段 -->
+		from mall_user
+		where phone = #{phone}
+	</select>
+	
+	<!-- 返回一个User对象list 输入参数类型为:User -->
+	<select id="getUserList" resultMap="BaseResultMap" parameterType="com.micromall.apiservice.entities.User">
+		SELECT
+		<include refid="Base_Column_List" />   <!--只需要查询我们需要的字段 -->
+		from mall_user
+	</select>
+	
+	<!-- 查询用户名 返回值为:int 输入类型:sting -->
+	<select id="checkUsername" resultType="int" parameterType="string">
+		select count(1) from mall_user where username = #{username}
+	</select>
+	
+	<!-- 查询电话是否存在 -->
+	<select id="checkPhone" resultType="int" parameterType="string">
+		SELECT COUNT(1) FROM mall_user WHERE phone = #{phone}
+	</select>
+	
+	<!-- 根据用户名和密码查询用户 返回一个User对象 输入参数类型为:map -->
+	<select id="checkNamePassword" resultType="int" parameterType="map">
+		select count(1) from mall_user 
+			where username = #{username}
+				and password = #{password}
+	</select>
+	
+	
+	
+</mapper>

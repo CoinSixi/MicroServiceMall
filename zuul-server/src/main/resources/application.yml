@@ -1,0 +1,50 @@
+# HTTP Server
+server:
+  port: 9010   
+# mysql数据源
+spring: 
+    application: 
+        name: zuul-server  # Service registers under this name
+    freemarker:
+        enabled: false           # Ignore Eureka dashboard FreeMarker templates
+    redis:
+        database: 0
+        host: 127.0.0.1
+        port: 6379
+        password: 
+        timeout: 6000ms
+        expire: 36000
+# Discovery Server Access
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://peer1:8762/eureka/,http://peer2:8763/eureka/
+# zuul设置
+zuul:
+    ignoredServices: "*"
+    routes:
+        user-center: 
+            path: /user-center/**
+            serviceId: user-center
+            stripPrefix: true
+        pay-service: 
+            path: /pay-service/**
+            serviceId: pay-service
+            stripPrefix: true
+        user-auth: 
+            path: /user-auth/**
+            serviceId: user-auth
+            stripPrefix: true
+#actuator配置
+management:
+  endpoints:
+    web:
+      exposure:
+        #加载所有的端点，默认只加载了info、health
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+    #可以关闭指定的端点
+    shutdown:
+      enabled: false

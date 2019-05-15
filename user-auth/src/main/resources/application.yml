@@ -1,0 +1,35 @@
+# HTTP Server
+server:
+  port: 8092   
+# 
+spring:
+    application: 
+        name: user-auth  # Service registers under this name
+    freemarker:
+        enabled: false           # Ignore Eureka dashboard FreeMarker templates
+    redis:
+        database: 0
+        host: 127.0.0.1
+        port: 6379
+        password: 
+        timeout: 6000ms
+        expire: 36000
+# Discovery Server Access
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://peer1:8762/eureka/,http://peer2:8763/eureka/
+
+#actuator配置
+management:
+  endpoints:
+    web:
+      exposure:
+        #加载所有的端点，默认只加载了info、health
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+    #可以关闭指定的端点
+    shutdown:
+      enabled: false

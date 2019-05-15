@@ -1,0 +1,28 @@
+# HTTP Server
+server:
+  port: 8091   
+# 
+spring:
+    application: 
+        name: user-center  # Service registers under this name
+    freemarker:
+        enabled: false           # Ignore Eureka dashboard FreeMarker templates
+# Discovery Server Access
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://peer1:8762/eureka/,http://peer2:8763/eureka/
+
+#actuator配置
+management:
+  endpoints:
+    web:
+      exposure:
+        #加载所有的端点，默认只加载了info、health
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+    #可以关闭指定的端点
+    shutdown:
+      enabled: false

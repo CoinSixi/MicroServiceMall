@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.micromall.orderservice.dao.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.micromall.apiservice.entities.Order">
+    <constructor>
+      <arg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="order_no" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="trade_no" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="seller_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="buyer_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="product_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="shipping_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="count" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="payment" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="payment_type" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="status" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="payment_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="send_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="end_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="close_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    </constructor>
+  </resultMap>
+  <resultMap id="OrderResultMap" type="com.micromall.apiservice.entities.OrderDetail">
+    <constructor>
+      <arg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="order_no" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="trade_no" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="seller_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="buyer_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="product_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="shipping_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="count" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="payment" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="payment_type" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="status" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="payment_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="send_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="end_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="close_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="subject" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="price" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="main_image" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+		id, order_no, trade_no, seller_id, 
+      buyer_id, product_id, shipping_id, count, 
+      payment, payment_type, status, 
+      payment_time, send_time, end_time, 
+      close_time, create_time, update_time
+	</sql>
+	<sql id="Detail_Column_List">
+		o.id, o.order_no, o.trade_no, o.seller_id, 
+      o.buyer_id, o.product_id, o.shipping_id, o.count, 
+      o.payment, o.payment_type, o.status, 
+      o.payment_time, o.send_time, o.end_time, 
+      o.close_time, o.create_time, o.update_time, 
+      p.subject, p.price, p.main_image
+	</sql>
+  
+  <insert id="insert" parameterType="com.micromall.apiservice.entities.Order">
+    insert into mall_order (id, order_no, trade_no, seller_id, 
+      buyer_id, product_id, shipping_id, count, 
+      payment, payment_type, status, 
+      payment_time, send_time, end_time, 
+      close_time, create_time, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{orderNo,jdbcType=VARCHAR}, #{tradeNo,jdbcType=VARCHAR}, #{sellerId,jdbcType=INTEGER}, 
+      #{buyerId,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, #{shippingId,jdbcType=INTEGER}, #{count,jdbcType=INTEGER}, 
+      #{payment,jdbcType=DECIMAL}, #{paymentType,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      #{paymentTime,jdbcType=TIMESTAMP}, #{sendTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{closeTime,jdbcType=TIMESTAMP}, now(), now()
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.micromall.apiservice.entities.Order">
+    insert into mall_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="orderNo != null">
+        order_no,
+      </if>
+      <if test="tradeNo != null">
+        trade_no,
+      </if>
+      <if test="sellerId != null">
+        seller_id,
+      </if>
+      <if test="buyerId != null">
+        buyer_id,
+      </if>
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="shippingId != null">
+        shipping_id,
+      </if>
+      <if test="count != null">
+        count,
+      </if>
+      <if test="payment != null">
+        payment,
+      </if>
+      <if test="paymentType != null">
+        payment_type,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="paymentTime != null">
+        payment_time,
+      </if>
+      <if test="sendTime != null">
+        send_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+      <if test="closeTime != null">
+        close_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderNo != null">
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeNo != null">
+        #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerId != null">
+        #{sellerId,jdbcType=INTEGER},
+      </if>
+      <if test="buyerId != null">
+        #{buyerId,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="shippingId != null">
+        #{shippingId,jdbcType=INTEGER},
+      </if>
+      <if test="count != null">
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="payment != null">
+        #{payment,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentType != null">
+        #{paymentType,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="paymentTime != null">
+        #{paymentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sendTime != null">
+        #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closeTime != null">
+        #{closeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        now(),
+      </if>
+      <if test="updateTime != null">
+        now(),
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.micromall.apiservice.entities.Order">
+    update mall_order
+      set order_no = #{orderNo,jdbcType=VARCHAR},
+        trade_no = #{tradeNo,jdbcType=VARCHAR},
+      	seller_id = #{sellerId,jdbcType=INTEGER},
+      	buyer_id = #{buyerId,jdbcType=INTEGER}, 
+        product_id = #{productId,jdbcType=INTEGER},
+        shipping_id = #{shippingId,jdbcType=INTEGER},
+        count = #{count,jdbcType=INTEGER},
+        payment = #{payment,jdbcType=DECIMAL},
+      	payment_type = #{paymentType,jdbcType=INTEGER}, 
+        status = #{status,jdbcType=INTEGER},
+        payment_time = #{paymentTime,jdbcType=TIMESTAMP},
+        send_time = #{sendTime,jdbcType=TIMESTAMP},
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+        close_time = #{closeTime,jdbcType=TIMESTAMP},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        update_time = now(),
+      where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.micromall.apiservice.entities.Order">
+    update mall_order
+    <set>
+      <if test="orderNo != null">
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeNo != null">
+        trade_no = #{tradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerId != null">
+        seller_id = #{sellerId,jdbcType=INTEGER},
+      </if>
+      <if test="buyerId != null">
+        buyer_id = #{buyerId,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="shippingId != null">
+        shipping_id = #{shippingId,jdbcType=INTEGER},
+      </if>
+      <if test="count != null">
+        count = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="payment != null">
+        payment = #{payment,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentType != null">
+        payment_type = #{paymentType,jdbcType=INTEGER}, 
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="paymentTime != null">
+        payment_time = #{paymentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sendTime != null">
+        send_time = #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closeTime != null">
+        close_time = #{closeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = now(),
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 设置update_time为当前时间, 输入参数类型为:String -->
+	<update id="setUpdateTime" parameterType="Integer">
+	    update mall_order set update_time = now()
+	    	where id = #{id}
+	</update>
+	<!-- 设置trade_no为当前时间, 输入参数类型为:Long -->
+	<update id="setTradeNo" parameterType="com.micromall.apiservice.entities.Order">
+	    update mall_order set trade_no = #{tradeNo}
+	    	where id = #{id}
+	</update>
+	<!-- 设置payment_time为当前时间, 输入参数类型为:Integer -->
+	<update id="setPaymentTime" parameterType="Integer">
+	    update mall_order set payment_time = now()
+	    	where id = #{id}
+	</update>
+	<!-- 设置send_time为当前时间, 输入参数类型为:Integer -->
+	<update id="setSendTime" parameterType="Integer">
+	    update mall_order set send_time = now()
+	    	where id = #{id}
+	</update>
+	<!-- 设置end_time为当前时间, 输入参数类型为:Integer -->
+	<update id="setEndTime" parameterType="Integer">
+	    update mall_order set end_time = now()
+	    	where id = #{id}
+	</update>
+	<!-- 设置close_time为当前时间, 输入参数类型为:Integer -->
+	<update id="setCloseTime" parameterType="Integer">
+	    update mall_order set close_time = now()
+	    	where id = #{id}
+	</update>
+	<!-- 设置status, 输入参数类型为:Integer -->
+	<update id="setStatus" parameterType="com.micromall.apiservice.entities.Order">
+	    update mall_order set status = #{status}
+	    	where id = #{id}
+	</update>
+	
+	<!-- 根据id查询用户 返回一个Order对象 输入参数类型为:Integer -->
+	<select id="getOrderById" resultMap="BaseResultMap" parameterType="Integer">
+		
+		<!-- <include refid="Base_Column_List" />   只需要查询我们需要的字段 -->
+		SELECT * from mall_order
+		where id = #{id}
+	</select>
+	
+	<!-- 根据orderNo查询用户 返回一个Order对象 输入参数类型为:Integer -->
+	<select id="getOrderByOrderNo" resultMap="BaseResultMap" parameterType="String">
+		SELECT
+		<include refid="Base_Column_List" />   <!--只需要查询我们需要的字段 -->
+		from mall_order
+		where order_no = #{orderNo}
+	</select>
+	
+  	<!-- 返回一个Order对象list -->
+	<select id="getOrderListByUserId" resultMap="BaseResultMap" parameterType="com.micromall.apiservice.entities.Order">
+		SELECT
+		<include refid="Base_Column_List" />   <!--只需要查询我们需要的字段 -->
+		from mall_order
+		where buyer_id = #{buyer_id}
+	</select>
+	
+	<!-- 返回一个Order对象list -->
+	<select id="getOrderListByStatus" resultMap="BaseResultMap" parameterType="com.micromall.apiservice.entities.Order">
+		SELECT
+		<include refid="Base_Column_List" />   <!--只需要查询我们需要的字段 -->
+		from mall_order
+		where buyer_id = #{buyerId} and status = #{status}
+	</select>
+	
+	<!-- 查询订单ID 返回值为:int 输入类型:Integer -->
+	<select id="checkOrderId" resultType="int" parameterType="Integer">
+		select count(1) from mall_order where id = #{id}
+	</select>
+	
+	<!-- 联表查询order left join product 返回值为:指定buyerID的List<orderDetail> 输入类型:Integer -->
+	<select id="getOrderDetailListByBuyerId" resultMap="OrderResultMap" parameterType="com.micromall.apiservice.entities.OrderDetail">
+      select 
+      <include refid="Detail_Column_List" />   <!--只需要查询我们需要的字段 -->
+      from mall_order as o
+	left join mall_product as p on o.product_id = p.id
+	where o.buyer_id = #{buyerId}
+  </select>
+  
+	<!-- 联表查询order left join product 返回值为:指定buyerID和status的List<orderDetail> 输入类型:Integer -->
+  <select id="getOrderDetailListByBuyerIdStatus" resultMap="OrderResultMap" parameterType="com.micromall.apiservice.entities.OrderDetail">
+      select 
+      <include refid="Detail_Column_List" />   <!--只需要查询我们需要的字段 -->
+      from mall_order as o
+	left join mall_product as p on o.product_id = p.id
+	where o.buyer_id = #{buyerId} and o.status = #{status}
+  </select>
+  
+  <!-- 联表查询order left join product 返回值为:指定sellerID的List<orderDetail> 输入类型:Integer -->
+  <select id="getOrderDetailListBySellerId" resultMap="OrderResultMap" parameterType="com.micromall.apiservice.entities.OrderDetail">
+      select 
+      <include refid="Detail_Column_List" />   <!--只需要查询我们需要的字段 -->
+      from mall_order as o
+	left join mall_product as p on o.product_id = p.id
+	where o.seller_id = #{sellerId}
+  </select>
+  
+  <!-- 联表查询order left join product 返回值为:指定sellerID和status的List<orderDetail> 输入类型:Integer -->
+  <select id="getOrderDetailListBySellerIdStatus" resultMap="OrderResultMap" parameterType="com.micromall.apiservice.entities.OrderDetail">
+      select 
+      <include refid="Detail_Column_List" />   <!--只需要查询我们需要的字段 -->
+      from mall_order as o
+	left join mall_product as p on o.product_id = p.id
+	where o.seller_id = #{sellerId} and o.status = #{status}
+  </select>
+</mapper>

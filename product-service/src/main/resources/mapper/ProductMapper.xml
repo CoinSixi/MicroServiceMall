@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.micromall.productservice.dao.ProductMapper">
+  <resultMap id="BaseResultMap" type="com.micromall.apiservice.entities.Product">
+    <constructor>
+      <arg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="subject" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="detail" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="classify" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="price" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="stock" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="sell_quantity" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="status" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="user_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="main_image" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="sub_images" javaType="java.lang.String" jdbcType="VARCHAR"/>
+      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    </constructor>
+  </resultMap>
+  <resultMap id="DetailResultMap" type="com.micromall.apiservice.entities.ProductDetail">
+    <constructor>
+      <arg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="subject" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="detail" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="classify" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="price" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="stock" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="sell_quantity" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="status" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="user_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="main_image" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="sub_images" javaType="java.lang.String" jdbcType="VARCHAR"/>
+      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="username" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="user_image" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Detail_Column_List">
+	  p.id, p.subject, p.detail, 
+      p.classify, p.price, p.stock, 
+      p.sell_quantity, p.status, p.user_id, 
+      p.main_image, p.sub_images, p.create_time, p.update_time, 
+      u.username, u.user_image
+	</sql>
+  <insert id="insert" parameterType="com.micromall.apiservice.entities.Product">
+    insert into mall_product (id, subject, detail, 
+      classify, price, stock, 
+      sell_quantity, status, user_id, 
+      main_image, sub_images, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{subject,jdbcType=VARCHAR}, #{detail,jdbcType=VARCHAR}, 
+      #{classify,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{stock,jdbcType=INTEGER}, 
+      #{sellQuantity,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{mainImage,jdbcType=VARCHAR}, #{subImages,jdbcType=VARCHAR}, now(), 
+      now())
+  </insert>
+  <insert id="insertSelective" parameterType="com.micromall.apiservice.entities.Product">
+    insert into mall_product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="subject != null">
+        subject,
+      </if>
+      <if test="detail != null">
+        detail,
+      </if>
+      <if test="classify != null">
+        classify,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="stock != null">
+        stock,
+      </if>
+      <if test="sellQuantity != null">
+        sell_quantity,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="mainImage != null">
+        main_image,
+      </if>
+      <if test="subImages != null">
+        sub_images,
+      </if>
+      <if test="createTime == null">
+        create_time,
+      </if>
+      <if test="updateTime == null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="subject != null">
+        #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null">
+        #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="classify != null">
+        #{classify,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="stock != null">
+        #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="sellQuantity != null">
+        #{sellQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="mainImage != null">
+        #{mainImage,jdbcType=VARCHAR},
+      </if>
+      <if test="subImages != null">
+        #{subImages,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime == null">
+        now(),
+      </if>
+      <if test="updateTime == null">
+        now()
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.micromall.apiservice.entities.Product">
+      update mall_product
+      set subject = #{subject,jdbcType=VARCHAR},
+        detail = #{detail,jdbcType=VARCHAR},
+        classify = #{classify,jdbcType=VARCHAR},
+      	price = #{price,jdbcType=DECIMAL},
+      	stock = #{stock,jdbcType=INTEGER},
+      	sell_quantity = #{sellQuantity,jdbcType=INTEGER},
+      	status = #{status,jdbcType=INTEGER},
+      	user_id = #{userId,jdbcType=INTEGER},
+      	sub_images = #{subImages,jdbcType=VARCHAR},
+      	main_image = #{mainImage,jdbcType=VARCHAR},
+      	create_time = #{createTime,jdbcType=TIMESTAMP}, 
+        update_time = now()
+      where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.micromall.apiservice.entities.Product">
+    update mall_product
+    <set>
+      <if test="subject != null">
+        subject = #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="detail != null">
+        detail = #{detail,jdbcType=VARCHAR},
+      </if>
+      <if test="classify != null">
+        classify = #{classify,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">       
+      	price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="stock != null">
+        stock = #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="sellQuantity != null">
+        sell_quantity = #{sellQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">       
+      	status = #{status,jdbcType=INTEGER},
+      </if>
+       <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="mainImage != null">
+        main_image = #{mainImage,jdbcType=VARCHAR},
+      </if>
+      <if test="subImages != null">
+        sub_images = #{subImages,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = now(),
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 设置update_time为当前时间, 输入参数类型为:Integer -->
+	<update id="setUpdateTime" parameterType="Integer">
+	    update mall_product set update_time = now()
+	    	where id = #{id}
+	</update>
+
+  <!-- 设置status, 输入参数类型为:Integer -->
+	<update id="setStatus" parameterType="map">
+	    update mall_product set status = #{status}
+	    	where id = #{id}
+	</update>
+  
+  <!-- 删除该product, 输入参数类型为:Integer -->
+	<delete id="deleteByProductId" parameterType="Integer">
+	    delete from mall_product where id = #{id}
+	</delete>
+	
+    <sql id="Base_Column_List">
+		id, subject, detail, classify, price, 
+      stock, sell_quantity, status, user_id, 
+      main_image, sub_images, create_time, 
+      update_time
+	</sql>
+	
+    <!-- 根据id查询用户 返回一个Product对象 输入参数类型为:Integer -->
+	<select id="getProductById" resultMap="BaseResultMap" parameterType="Integer">
+		SELECT
+		<include refid="Base_Column_List" />   <!--只需要查询我们需要的字段 -->
+		from mall_product
+		where id = #{id}
+	</select>
+	
+	<!-- 根据id查询用户 返回一个Product对象 输入参数类型为:Integer -->
+	<select id="getProductDetail" resultMap="DetailResultMap" parameterType="Integer">
+		select 
+      <include refid="Detail_Column_List" />   <!--只需要查询我们需要的字段 -->
+      from mall_product as p
+	left join mall_user as u on p.user_id = u.id
+	where p.id = #{id}
+	</select>
+	
+	<!-- 返回一个Product对象list 输入参数类型为:Integer -->
+	<select id="getProductList" resultMap="BaseResultMap" parameterType="com.micromall.apiservice.entities.Product">
+		SELECT
+		<include refid="Base_Column_List" />   <!--只需要查询我们需要的字段 -->
+		from mall_product
+		where user_id = #{userId}
+	</select>
+	
+	<!-- 返回一个Product对象list 输入参数类型为:Integer -->
+	<select id="getProductStatusList" resultMap="BaseResultMap" parameterType="com.micromall.apiservice.entities.Product">
+		SELECT
+		<include refid="Base_Column_List" />   <!--只需要查询我们需要的字段 -->
+		from mall_product
+		where user_id = #{userId} and status = #{status}
+	</select>
+	
+	<!-- <select id="getProductsSold" resultMap="BaseResultMap" parameterType="com.micromall.apiservice.entities.Product">
+		SELECT
+		<include refid="Base_Column_List" />   只需要查询我们需要的字段
+		from mall_product
+		where user_id = #{userId} and sell_quantity > 0 
+	</select> -->
+	<!-- 查询产品 返回值为:int 输入类型:Integer -->
+	<select id="checkProduct" resultType="int" parameterType="Integer">
+		select count(1) from mall_product where id = #{id}
+	</select>
+	
+	<!-- 联表查询product left join user 返回值为:指定List<productDetail>-->
+	<select id="getProductDetailList" resultMap="DetailResultMap" parameterType="com.micromall.apiservice.entities.ProductDetail">
+      select 
+      <include refid="Detail_Column_List" />   <!--只需要查询我们需要的字段 -->
+      from mall_product as p
+	left join mall_user as u on p.user_id = u.id
+    </select>
+    
+	<!-- 联表查询cart left join product 返回值为:指定userId的List<cartDetail> 输入类型:String -->
+	<select id="getProductDetailListByClassify" resultMap="DetailResultMap" parameterType="com.micromall.apiservice.entities.ProductDetail">
+      select 
+      <include refid="Detail_Column_List" />   <!--只需要查询我们需要的字段 -->
+      from mall_product as p
+	  left join mall_user as u on p.user_id = u.id
+	  where p.classify = #{classify}
+    </select>
+</mapper>

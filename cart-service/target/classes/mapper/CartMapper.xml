@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.micromall.cartservice.dao.CartMapper">
+  <resultMap id="BaseResultMap" type="com.micromall.apiservice.entities.Cart">
+    <constructor>
+      <arg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="user_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="product_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="quantity" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="checked" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    </constructor>
+  </resultMap>
+  <resultMap id="DetailResultMap" type="com.micromall.apiservice.entities.CartDetail">
+    <constructor>
+      <arg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="user_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="product_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="quantity" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="checked" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="subject" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="price" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="status" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="main_image" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Detail_Column_List">
+	  c.id, c.user_id, c.product_id, 
+      c.quantity, c.checked, c.create_time, 
+      c.update_time,
+      p.subject, p.price, p.status, p.main_image
+	</sql>
+  <insert id="insert" parameterType="com.micromall.apiservice.entities.Cart">
+    insert into mall_cart (id, user_id, product_id, 
+      quantity, checked, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, 
+      #{quantity,jdbcType=INTEGER}, #{checked,jdbcType=INTEGER}, now(), 
+      now())
+  </insert>
+  <insert id="insertSelective" parameterType="com.micromall.apiservice.entities.Cart">
+    insert into mall_cart
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="quantity != null">
+        quantity,
+      </if>
+      <if test="checked != null">
+        checked,
+      </if>
+      <if test="createTime == null">
+        create_time,
+      </if>
+      <if test="updateTime == null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="quantity != null">
+        #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="checked != null">
+        #{checked,jdbcType=INTEGER},
+      </if>
+      <if test="createTime == null">
+        now(),
+      </if>
+      <if test="updateTime == null">
+        now(),
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.micromall.apiservice.entities.Cart">
+      update mall_cart
+      set user_id = #{userId,jdbcType=INTEGER},
+      	product_id = #{productId,jdbcType=INTEGER},
+      	quantity = #{quantity,jdbcType=INTEGER},
+      	checked = #{checked,jdbcType=INTEGER},
+      	create_time = #{createTime,jdbcType=TIMESTAMP}, 
+        update_time = now()
+      where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.micromall.apiservice.entities.Cart">
+    update mall_cart
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="quantity != null">
+        quantity = #{quantity,jdbcType=INTEGER},
+      </if>
+      <if test="checked != null">
+        checked = #{checked,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = now(),
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 设置update_time为当前时间, 输入参数类型为:Integer -->
+	<update id="setUpdateTime" parameterType="Integer">
+	    update mall_cart set update_time = now()
+	    	where id = #{id}
+	</update>
+	
+  <!-- 设置Quantity, 输入参数类型为:map -->
+	<update id="setQuantity" parameterType="map">
+	    update mall_cart set quantity = #{quantity}
+	    	where id = #{id}
+	</update>
+	
+  <!-- 删除该cart, 输入参数类型为:Integer -->
+	<delete id="deleteById" parameterType="Integer">
+	    delete from mall_cart where id = #{id}
+	</delete>
+	
+	<!-- 根据user_id,product_id查询cart 返回一个Cart对象 输入参数类型为:map -->
+	<select id="getCart" resultMap="BaseResultMap" parameterType="map">
+		SELECT * from mall_cart
+		where user_id = #{userId} and product_id = #{productId}
+	</select>
+	
+	<!-- 联表查询cart left join product 返回值为:指定userId的List<cartDetail> 输入类型:Integer -->
+	<select id="getCartDetailListByUserId" resultMap="DetailResultMap" parameterType="com.micromall.apiservice.entities.CartDetail">
+      select 
+      <include refid="Detail_Column_List" />   <!--只需要查询我们需要的字段 -->
+      from mall_cart as c
+	left join mall_product as p on c.product_id = p.id
+	where c.user_id = #{userId}
+  </select>
+</mapper>

@@ -1,0 +1,4 @@
+# Yureka Server Configuration
+spring:
+  profiles:
+    active: peer2

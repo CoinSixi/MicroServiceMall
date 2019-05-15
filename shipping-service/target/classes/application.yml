@@ -1,0 +1,45 @@
+# HTTP Server
+server:
+  port: 8088   
+# mysql数据源
+spring:
+    datasource:
+        name: test
+        url: jdbc:mysql://localhost:3306/microservicemalldb?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
+        username: root
+        password: 321duibuqi
+        driver-class-name: com.mysql.jdbc.Driver
+        initialSize: 20
+        maxActive: 50
+        maxIdle: 20
+        minIdle: 10
+        maxWait: 10
+        defaultAutoCommit: true
+        minEvictableIdleTimeMillis: 3600000
+    application: 
+        name: product-service  # Service registers under this name
+    freemarker:
+        enabled: false           # Ignore Eureka dashboard FreeMarker templates
+# Discovery Server Access
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://peer1:8762/eureka/,http://peer2:8763/eureka/
+# mybatis配置
+mybatis: 
+    config-locations: classpath:/mybatis-config.xml
+    mapper-locations: classpath:/mapper/*.xml
+    type-aliases-package: com.micromall.apiservice.entities
+#actuator配置
+management:
+  endpoints:
+    web:
+      exposure:
+        #加载所有的端点，默认只加载了info、health
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+    #可以关闭指定的端点
+    shutdown:
+      enabled: false
